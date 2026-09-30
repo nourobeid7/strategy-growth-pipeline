@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Strategy & Growth Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08080B; --panel:rgba(255,255,255,.035); --line:rgba(255,255,255,.08); --track:rgba(255,255,255,.07);
+    --ink:#FFFFFF; --ink2:#DCDCE2; --mute:#ADADB8; --dim:#72727C;
+    --violet:#8C78FF; --lav:#C9BCFF; --mint:#7FF0B6; --amber:#FFD07A; --pink:#FF9AA4;
+    --font:"Inter Tight",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    box-sizing:border-box; color-scheme:dark;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#08080B; } }
+  :root[data-theme="dark"]{ --bg:#08080B; }
+  *,*::before,*::after{ box-sizing:inherit; }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); background:var(--bg); scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  body::before{ content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(640px 480px at 6% 0%, rgba(140,120,255,.38), transparent 65%),
+      radial-gradient(600px 500px at 100% 100%, rgba(90,169,255,.22), transparent 65%); }
+  main{ position:relative; z-index:1; max-width:700px; margin:0 auto; padding:32px 22px 48px; }
+  a{ color:inherit; text-decoration:none; }
+  a:focus-visible{ outline:2px solid var(--lav); outline-offset:3px; border-radius:10px; }
+
+  .top{ display:flex; justify-content:space-between; font-size:12px; color:var(--dim); }
+  .top b{ color:var(--mute); font-weight:600; letter-spacing:.04em; }
+
+  header{ padding:56px 0 0; }
+  .for{ color:var(--mute); font-size:13px; margin:0 0 8px; }
+  h1{ font-weight:700; font-size:clamp(30px,5vw,40px); line-height:1.1; letter-spacing:-.02em; margin:0; }
+
+  /* Main focus */
+  .focus{ margin-top:28px; padding:18px 20px; border-radius:14px; border:1px solid rgba(140,120,255,.35);
+    background:linear-gradient(120deg, rgba(140,120,255,.18), rgba(140,120,255,.04) 70%);
+    display:grid; grid-template-columns:auto 1fr auto; gap:6px 20px; align-items:center; }
+  .focus .k{ font-size:12px; color:var(--lav); font-weight:600; }
+  .focus .name{ font-size:26px; font-weight:800; letter-spacing:-.01em; line-height:1; }
+  .focus .desc{ font-size:13px; color:var(--mute); }
+  .focus .big{ font-size:30px; font-weight:800; text-align:right; line-height:1; }
+  .focus .big small{ display:block; font-size:11.5px; font-weight:500; color:var(--mute); margin-top:4px; }
+  .focus .fbar{ grid-column:1 / -1; height:6px; border-radius:6px; background:var(--track); overflow:hidden; margin-top:8px; }
+  .focus .fbar i{ display:block; height:100%; width:90%; background:var(--violet); border-radius:6px; }
+
+  /* Org chart */
+  .org{ margin-top:36px; }
+  .root{ width:max-content; margin:0 auto; padding:8px 18px; border-radius:10px; background:var(--ink); color:#08080B; font-weight:700; font-size:14px; }
+  .stem{ width:1px; height:18px; background:var(--dim); margin:0 auto; }
+  .branches{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:8px; position:relative; padding-top:18px; }
+  .branches::before{ content:""; position:absolute; top:0; left:calc((100% - 40px)/12); right:calc((100% - 40px)/12); height:1px; background:var(--dim); }
+  .node{ position:relative; padding:10px 10px 11px; border-radius:10px; background:var(--panel); border:1px solid var(--line); }
+  .node::before{ content:""; position:absolute; top:-19px; left:50%; width:1px; height:18px; background:var(--dim); }
+  .node .i{ font-size:11px; color:var(--violet); font-weight:700; }
+  .node b{ display:block; font-size:12.5px; overflow-wrap:anywhere; font-weight:600; line-height:1.25; margin-top:2px; }
+  .node small{ display:block; font-size:11.5px; color:var(--dim); margin-top:4px; line-height:1.35; }
+  .node.hot{ border-color:rgba(140,120,255,.5); background:rgba(140,120,255,.10); }
+  .node.hot small em{ font-style:normal; color:var(--lav); font-weight:600; }
+  .node:hover{ border-color:rgba(140,120,255,.4); }
+  .key{ font-size:12px; color:var(--dim); margin:14px 0 0; text-align:center; }
+
+  /* Sections */
+  section{ padding-top:40px; }
+  .h2{ display:flex; align-items:center; gap:12px; margin:0 0 4px; }
+  .h2 .i{ font-size:12px; font-weight:700; color:var(--violet); }
+  .h2 h2{ font-size:19px; font-weight:700; margin:0; white-space:nowrap; }
+  .h2 .rule{ flex:1; height:1px; background:var(--line); }
+
+  .item{ padding:14px 0; border-bottom:1px solid var(--line); }
+  .item:last-child{ border-bottom:0; }
+  .row{ display:grid; grid-template-columns:1fr 210px; gap:20px; align-items:center; }
+  .item h3{ margin:0; font-size:15px; font-weight:600; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .item p{ margin:3px 0 0; color:var(--mute); font-size:13.5px; }
+  .item p.dec{ color:var(--ink2); }
+  .item p.dec b{ color:var(--lav); font-weight:600; }
+
+  .time{ display:grid; grid-template-columns:84px 1fr; gap:10px; align-items:center; }
+  .time .v{ font-weight:700; font-size:15px; text-align:right; white-space:nowrap; }
+  .time .t{ height:6px; border-radius:6px; background:var(--track); overflow:hidden; }
+  .time .t i{ display:block; height:100%; border-radius:6px; background:var(--violet); }
+  .time.txt{ grid-template-columns:1fr; text-align:right; font-weight:600; font-size:14px; color:var(--ink2); }
+  .time.txt small{ display:block; font-weight:400; font-size:12px; color:var(--dim); }
+
+  .time .v small{ font-size:11px; font-weight:500; color:var(--dim); margin-left:2px; }
+  .time .t i.min{ min-width:4px; }
+  .intro{ margin:14px 0 6px; padding:14px 16px; border-radius:12px; background:var(--panel); border:1px solid var(--line); font-size:13.5px; color:var(--ink2); }
+  .intro a{ display:inline-block; margin-top:8px; font-weight:600; color:var(--lav); }
+  .intro a:hover{ text-decoration:underline; }
+  .t-on{ color:var(--mute); }
+  .tag{ font-size:11px; font-weight:600; padding:1px 8px; border-radius:999px; border:1px solid currentColor; }
+  .t-focus{ color:var(--violet); background:rgba(140,120,255,.12); }
+  .t-wait{ color:var(--amber); }
+  .t-hand{ color:var(--mint); }
+  .t-call{ color:var(--pink); }
+
+  /* Stages */
+  .stages{ margin-top:10px; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .stage{ display:grid; grid-template-columns:130px 1fr 210px; gap:14px; align-items:center; padding:9px 12px; font-size:13.5px; }
+  .stage + .stage{ border-top:1px solid var(--line); }
+  .stage .when{ font-weight:600; font-size:12.5px; }
+  .stage .when small{ display:block; font-weight:400; color:var(--dim); font-size:11.5px; }
+  .stage.now{ background:rgba(140,120,255,.07); }
+  .stage.now .when{ color:var(--lav); }
+  .stage.next .when{ color:var(--mute); }
+  .stage .what{ color:var(--ink2); }
+  .stage.next .time .t i{ background:rgba(140,120,255,.45); }
+
+  .others{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .others div{ padding:12px 14px; border-radius:10px; background:var(--panel); border:1px solid var(--line); }
+  .others b{ display:block; font-size:14px; font-weight:600; }
+  .others span{ font-size:13px; color:var(--mute); }
+
+  .call{ margin-top:12px; display:flex; gap:16px; align-items:center; padding:14px 18px; border-radius:12px; border:1px solid rgba(255,154,164,.35); background:rgba(255,154,164,.07); }
+  .call b{ font-size:15px; }
+  .call p{ margin:2px 0 0; font-size:13.5px; color:var(--mute); }
+  .call .ask{ margin-left:auto; font-size:12px; font-weight:700; color:var(--pink); white-space:nowrap; }
+
+  footer{ display:flex; justify-content:space-between; font-size:12px; color:var(--dim); padding-top:24px; border-top:1px solid var(--line); margin-top:48px; }
+
+  @media (max-width:680px){
+    .branches{ grid-template-columns:repeat(2,1fr); padding-top:0; }
+    .branches::before, .node::before, .stem{ display:none; }
+    .root{ margin-bottom:10px; }
+    .row{ grid-template-columns:1fr; gap:8px; }
+    .stage{ grid-template-columns:1fr; gap:4px; }
+    .time.txt{ text-align:left; }
+    .others{ grid-template-columns:1fr; }
+    .focus{ grid-template-columns:1fr auto; }
+    .focus .desc{ grid-column:1 / -1; grid-row:3; }
+    .h2 h2{ white-space:normal; }
+  }
+
+  /* Item block: one column, labelled lines */
+  .it{ padding:16px 0; border-bottom:1px solid var(--line); }
+  .it:last-child{ border-bottom:0; }
+  .it h3{ margin:0 0 8px; font-size:16px; font-weight:700; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .ln{ display:grid; grid-template-columns:72px 1fr; gap:12px; font-size:13.5px; padding:3px 0; }
+  .ln .lb{ color:var(--dim); font-weight:600; }
+  .ln .tx{ color:var(--ink2); }
+  .ln.dec .lb{ color:var(--lav); }
+  .fc{ display:flex; align-items:center; gap:10px; }
+  .fc + .fc{ margin-top:6px; }
+  .fc .t{ width:180px; height:6px; border-radius:6px; background:var(--track); overflow:hidden; flex:none; }
+  .fc .t i{ display:block; height:100%; border-radius:6px; background:var(--violet); }
+  .fc .t i.min{ min-width:4px; }
+  .fc .t.soft i{ background:rgba(140,120,255,.45); }
+  .fc b{ font-weight:700; color:var(--ink); white-space:nowrap; }
+  .fc span{ color:var(--dim); font-size:12.5px; }
+  @media (max-width:680px){ .fc .t{ width:110px; } .ln{ grid-template-columns:64px 1fr; } }
+  .tx ul{ margin:0; padding:0; list-style:none; }
+  .tx li{ position:relative; padding-left:14px; margin:1px 0; }
+  .tx li::before{ content:""; position:absolute; left:0; top:.62em; width:5px; height:5px; border-radius:50%; background:var(--violet); }
+  .tx li b{ color:var(--ink); font-weight:600; }
+  .split{ grid-column:1 / -1; display:flex; height:8px; border-radius:6px; overflow:hidden; gap:3px; margin-top:10px; }
+  .split i{ display:block; height:100%; }
+  .focus .w{ display:flex; gap:22px; text-align:right; }
+  .focus .w div{ font-size:28px; font-weight:800; line-height:1; }
+  .focus .w small{ display:block; font-size:11.5px; font-weight:500; color:var(--mute); margin-top:4px; }
+  .focus .w .alt{ color:var(--lav); }
+  .cu{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin:12px 0 4px; padding:11px 14px; border-radius:10px; background:rgba(140,120,255,.08); border:1px solid rgba(140,120,255,.3); font-size:13.5px; }
+  .cu b{ font-weight:600; color:var(--ink); }
+  .cu span{ font-weight:700; color:var(--lav); font-size:12.5px; }
+  .cu:hover{ background:rgba(140,120,255,.14); }
+  .goal{ margin:28px 0 0; font-size:14px; font-weight:700; color:var(--ink); }
+  .vision{ margin:6px 0 0; font-size:clamp(20px,3.2vw,24px); font-weight:700; color:var(--lav); letter-spacing:-.01em; }
+  .outs{ list-style:none; margin:14px 0 0; padding:0; display:grid; gap:6px; }
+  .outs li{ position:relative; padding-left:26px; font-size:14px; color:var(--ink2); }
+  .outs li::before{ content:""; position:absolute; left:0; top:2px; width:14px; height:14px; border-radius:4px; border:1.5px solid var(--violet); }
+  .goal + .focus{ margin-top:10px; }
+  .focus .w .alt2{ color:var(--mute); }
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><b>ARLAB OS</b><span>Pipeline plan, 30 Sep 2026</span></div>
+
+  <header>
+    <p class="for">Prepared for Wissam</p>
+    <h1>Strategy &amp; Growth pipeline</h1>
+
+    <p class="goal">October split</p>
+    <div class="focus">
+      <div><div class="k">Main focus</div><div class="name">1001</div></div>
+      <div class="desc">Digital Twin, Product Development</div>
+      <div class="w"><div>85%<small>1001</small></div><div class="alt">10%<small>Wissam support</small></div><div class="alt2">5%<small>Others</small></div></div>
+      <div class="split"><i style="width:85%;background:var(--violet)"></i><i style="width:10%;background:var(--lav)"></i><i style="width:5%;background:var(--mute)"></i></div>
+    </div>
+
+    <div class="org" aria-label="How Strategy & Growth is structured">
+      <div class="root">Strategy &amp; Growth</div>
+      <div class="stem"></div>
+      <nav class="branches">
+        <a class="node" href="#s1"><span class="i">01</span><b>Partnerships</b><small>Anthropic, YouTube, OpenAI</small></a>
+        <a class="node" href="#s2"><span class="i">02</span><b>AI Governance</b><small>Internal AI process</small></a>
+        <a class="node" href="#s3"><span class="i">03</span><b>Networking</b><small>Always on, ATM calls</small></a>
+        <a class="node hot" href="#s4"><span class="i">04</span><b>Product Development</b><small><em>1001</em>, ACEC, P3, P4, P5</small></a>
+        <a class="node" href="#s5"><span class="i">05</span><b>R&amp;D</b><small>Weekly</small></a>
+        <a class="node" href="#s6"><span class="i">06</span><b>Wissam Support</b><small>Others: skills, ad‑hoc</small></a>
+      </nav>
+      <p class="key">Every % and bar below is the share of my focus each item takes.</p>
+    </div>
+  </header>
+
+  <!-- 01 -->
+  <section id="s1">
+    <div class="h2"><span class="i">01</span><h2>Partnerships</h2><span class="rule"></span></div>
+    <div class="it">
+      <h3>Anthropic</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx"><ul>
+        <li><b>Select partner:</b> 2 of 3 requirements done</li>
+        <li><b>Last requirement:</b> clients live on Claude through us. Playholding and Numbase are under review</li>
+        <li><b>Certified partner:</b> Anthropic's new tier, expected this week</li>
+      </ul></span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Once the setup is done, Rafic takes the Anthropic account on the knowledge and expertise side. I train him into our Anthropic expert through the courses.</span></div>
+      <div class="stages"><div class="stage now"><span class="when">Stage 1<small>Now</small></span><span class="what">Follow‑ups and check‑ins until the partnership unlocks</span><div class="time"><span class="v">20%</span><span class="t"><i style="width:20%"></i></span></div></div><div class="stage next"><span class="when">Stage 2<small>Once unlocked</small></span><span class="what">Build the full setup for you (3–5 full days of focus)</span><div class="time"><span class="v">60%</span><span class="t"><i style="width:60%"></i></span></div></div></div>
+    </div>
+    <div class="it">
+      <h3>YouTube</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Waiting to be onboarded.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">We have many different services, so I set up the foundation of services, map what we need, then ship to Patil.</span></div>
+      <div class="stages"><div class="stage now"><span class="when">Stage 1<small>Now</small></span><span class="what">Nothing needed until onboarding</span><div class="time"><span class="v">0%</span><span class="t"><i style="width:0%"></i></span></div></div><div class="stage next"><span class="when">Stage 2<small>Once onboarded</small></span><span class="what">Build the full setup for you, then ship to Patil</span><div class="time txt">2 full days</div></div></div>
+    </div>
+    <div class="it">
+      <h3>OpenAI Partner Network <span class="tag t-call">Your decision</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Can I allocate 2 days for the whole setup?</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Once the setup is done, I hand it to Rafic to design products for OpenAI so we can sell them. I'll need someone to handle the account commercially as our OpenAI expert.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t soft"><i style="width:0"></i></span><b>2 full days</b><span>to build the full setup, if approved</span></div></span></div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <div class="h2"><span class="i">02</span><h2>AI Governance</h2><span class="rule"></span></div>
+    <div class="it">
+      <h3>Internal AI process <span class="tag t-on">Ongoing</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Pending from Maya, so I'm running it on Cowork meanwhile.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Finalize the process and enforce it internally. Get certifications for Dubai and KSA.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:30%"></i></span><b>30%</b></div></span></div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <div class="h2"><span class="i">03</span><h2>Networking</h2><span class="rule"></span></div>
+    <div class="it">
+      <h3>Networking <span class="tag t-on">Ongoing</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx"><ul><li><b>Always on:</b> I network continuously</li><li><b>ATM:</b> 5 calls, conversions ship to Ops</li></ul></span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Expand the Qatar base.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:15%"></i></span><b>15%</b></div></span></div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <div class="h2"><span class="i">04</span><h2>Product Development</h2><span class="rule"></span></div>
+    <a class="cu" href="https://app.clickup.com/9018843224/v/dc/8ct182r-102038" target="_blank" rel="noopener"><b>Process and templates set up in ClickUp</b><span>Open</span></a>
+    <div class="it">
+      <h3>1001 <span class="tag t-focus">Main focus</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Digital Twin. Build v1.0 in progress: onboarding and e‑contract, Twin Studio, social connect, payouts, admin console.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:85%"></i></span><b>85%</b></div></span></div>
+    </div>
+    <div class="it">
+      <h3>ACEC</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">AI Consultative Solution. Step 3: we design the final solution.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">I define the solution. Once the client confirms the engagement, Rafic takes product development on the process.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i class="min" style="width:1%"></i></span><b>15 min</b><span>every 2 days, after handover</span></div></span></div>
+    </div>
+    <div class="it">
+      <h3>P4 Customer Support Agent <span class="tag t-hand">To Rafic, Oct 6</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Email agent is classifying, drafting and forwarding.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">I close the email phase. Rafic takes Instagram and LinkedIn. I keep managing the skills.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i class="min" style="width:2%"></i></span><b>10 min</b><span>a day, after handover</span></div></span></div>
+    </div>
+    <div class="it">
+      <h3>P3 Creator Discovery Platform <span class="tag t-hand">To Rafic, Oct 6</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Fixing the TikTok and Meta API issues. Running meetings and follow‑ups.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Rafic takes on the product management part.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i class="min" style="width:2%"></i></span><b>10 min</b><span>a day, after handover</span></div></span></div>
+    </div>
+    <div class="it">
+      <h3>P5 Smart Calendar <span class="tag t-hand">To Rafic, Oct 6</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Fixing the TikTok and Meta API issues. Running meetings and follow‑ups.</span></div>
+      <div class="ln dec"><span class="lb">Plan</span><span class="tx">Rafic takes on the product management part.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i class="min" style="width:2%"></i></span><b>10 min</b><span>a day, after handover</span></div></span></div>
+    </div>
+  </section>
+
+  <section id="s5">
+    <div class="h2"><span class="i">05</span><h2>R&amp;D</h2><span class="rule"></span></div>
+    <div class="it">
+      <h3>R&amp;D</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Weekly.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i class="min" style="width:1.25%"></i></span><b>30 min</b><span>a week</span></div></span></div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="h2"><span class="i">06</span><h2>Wissam Support</h2><span class="rule"></span></div>
+    <div class="it">
+      <h3>Wissam support <span class="tag t-on">Ongoing</span></h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Whenever you need me.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:10%"></i></span><b>10%</b></div></span></div>
+    </div>
+    <p class="sub">Others</p>
+    <div class="it">
+      <h3>ARlab Skill Foundation</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Maintenance.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:5%;background:var(--mute)"></i></span><b>5%</b><span>shared across Others</span></div></span></div>
+    </div>
+    <div class="it">
+      <h3>Ad‑hoc requests</h3>
+      <div class="ln"><span class="lb">Status</span><span class="tx">Handled as they come in.</span></div>
+      <div class="ln"><span class="lb">Focus</span><span class="tx"><div class="fc"><span class="t"><i style="width:5%;background:var(--mute)"></i></span><b>5%</b><span>shared across Others</span></div></span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h2"><span class="i" style="color:var(--pink)">!</span><h2>Needs your decision</h2><span class="rule"></span></div>
+    <div class="call">
+      <div><b>OpenAI Partner Network</b><p>Can I allocate 2 full days for the whole setup?</p></div>
+      <span class="ask">Yes / No</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="h2"><span class="i">✓</span><h2>Goal for October</h2><span class="rule"></span></div>
+    <ul class="outs">
+      <li>Partnerships start moving and turn into action</li>
+      <li>Anthropic Certified tier secured</li>
+      <li>AI process enforced internally</li>
+      <li>1001: a solid website, at least 5 creators interested, first twin created end to end in the Creator Portal, and 2 brand or agency conversations opened</li>
+    </ul>
+  </section>
+
+  <footer><span>ARLAB OS</span><span>Strategy &amp; Growth</span></footer>
+</main>
+</body>
+</html>
